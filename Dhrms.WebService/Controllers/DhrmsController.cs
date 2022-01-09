@@ -188,7 +188,7 @@ namespace Dhrms.WebService.Controllers
             {
                 return Json("No Records Found");
             }
-            
+            //used JSON type to preserve same format case
             return Json(JsonConvert.SerializeObject(CandidateList, Formatting.Indented));
         }
 
