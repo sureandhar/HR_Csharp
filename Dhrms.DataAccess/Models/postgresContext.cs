@@ -17,23 +17,33 @@ namespace Dhrms.DataAccess.Models
 
         public virtual DbSet<Appliedjobs> Appliedjobs { get; set; }
         public virtual DbSet<Candidatedetails> Candidatedetails { get; set; }
+        public virtual DbSet<Diplomadetails> Diplomadetails { get; set; }
+        public virtual DbSet<Educationaldetails> Educationaldetails { get; set; }
+        public virtual DbSet<Highereducationaldetails> Highereducationaldetails { get; set; }
         public virtual DbSet<Hr> Hr { get; set; }
         public virtual DbSet<Interviewerdetails> Interviewerdetails { get; set; }
         public virtual DbSet<Jobs> Jobs { get; set; }
+        public virtual DbSet<Pgdetails> Pgdetails { get; set; }
+        public virtual DbSet<Pucdetails> Pucdetails { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<Secondaryeducationaldetails> Secondaryeducationaldetails { get; set; }
+        public virtual DbSet<Skills> Skills { get; set; }
+        public virtual DbSet<Sslcdetails> Sslcdetails { get; set; }
+        public virtual DbSet<Ugdetails> Ugdetails { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresEnum(null, "gen", new[] { "f", "m", "o" });
 
             modelBuilder.Entity<Appliedjobs>(entity =>
             {
@@ -125,6 +135,105 @@ namespace Dhrms.DataAccess.Models
                     .HasForeignKey(d => d.Userid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_userid");
+            });
+
+            modelBuilder.Entity<Diplomadetails>(entity =>
+            {
+                entity.HasKey(e => e.Diplomaid)
+                    .HasName("diplomadetails_pkey");
+
+                entity.ToTable("diplomadetails");
+
+                entity.Property(e => e.Diplomaid)
+                    .HasColumnName("diplomaid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Institutionname)
+                    .IsRequired()
+                    .HasColumnName("institutionname");
+
+                entity.Property(e => e.Percentage)
+                    .HasColumnName("percentage")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Streamname)
+                    .IsRequired()
+                    .HasColumnName("streamname");
+
+                entity.Property(e => e.Yearofpassing)
+                    .IsRequired()
+                    .HasColumnName("yearofpassing");
+            });
+
+            modelBuilder.Entity<Educationaldetails>(entity =>
+            {
+                entity.HasKey(e => e.Educationalid)
+                    .HasName("educationaldetails_pkey");
+
+                entity.ToTable("educationaldetails");
+
+                entity.Property(e => e.Educationalid)
+                    .HasColumnName("educationalid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Candidateid).HasColumnName("candidateid");
+
+                entity.Property(e => e.Highereducationalid).HasColumnName("highereducationalid");
+
+                entity.Property(e => e.Resumea).HasColumnName("resumea");
+
+                entity.Property(e => e.Secondaryeducationalid).HasColumnName("secondaryeducationalid");
+
+                entity.HasOne(d => d.Candidate)
+                    .WithMany(p => p.Educationaldetails)
+                    .HasForeignKey(d => d.Candidateid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_candidate");
+
+                entity.HasOne(d => d.Highereducational)
+                    .WithMany(p => p.Educationaldetails)
+                    .HasForeignKey(d => d.Highereducationalid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_highereducation");
+
+                entity.HasOne(d => d.Secondaryeducational)
+                    .WithMany(p => p.Educationaldetails)
+                    .HasForeignKey(d => d.Secondaryeducationalid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_secondaryeducation");
+            });
+
+            modelBuilder.Entity<Highereducationaldetails>(entity =>
+            {
+                entity.HasKey(e => e.Highereducationalid)
+                    .HasName("highereducationaldetails_pkey");
+
+                entity.ToTable("highereducationaldetails");
+
+                entity.Property(e => e.Highereducationalid)
+                    .HasColumnName("highereducationalid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Diplomaid).HasColumnName("diplomaid");
+
+                entity.Property(e => e.Pgid).HasColumnName("pgid");
+
+                entity.Property(e => e.Ugid).HasColumnName("ugid");
+
+                entity.HasOne(d => d.Diploma)
+                    .WithMany(p => p.Highereducationaldetails)
+                    .HasForeignKey(d => d.Diplomaid)
+                    .HasConstraintName("fk_diploma");
+
+                entity.HasOne(d => d.Pg)
+                    .WithMany(p => p.Highereducationaldetails)
+                    .HasForeignKey(d => d.Pgid)
+                    .HasConstraintName("fk_pg");
+
+                entity.HasOne(d => d.Ug)
+                    .WithMany(p => p.Highereducationaldetails)
+                    .HasForeignKey(d => d.Ugid)
+                    .HasConstraintName("fk_ug");
             });
 
             modelBuilder.Entity<Hr>(entity =>
@@ -286,6 +395,58 @@ namespace Dhrms.DataAccess.Models
                     .HasConstraintName("hrid_fk");
             });
 
+            modelBuilder.Entity<Pgdetails>(entity =>
+            {
+                entity.HasKey(e => e.Pgid)
+                    .HasName("pgdetails_pkey");
+
+                entity.ToTable("pgdetails");
+
+                entity.Property(e => e.Pgid)
+                    .HasColumnName("pgid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Institutionname)
+                    .IsRequired()
+                    .HasColumnName("institutionname");
+
+                entity.Property(e => e.Percentage)
+                    .HasColumnName("percentage")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Streamname)
+                    .IsRequired()
+                    .HasColumnName("streamname");
+
+                entity.Property(e => e.Yearofpassing)
+                    .IsRequired()
+                    .HasColumnName("yearofpassing");
+            });
+
+            modelBuilder.Entity<Pucdetails>(entity =>
+            {
+                entity.HasKey(e => e.Pucid)
+                    .HasName("pucdetails_pkey");
+
+                entity.ToTable("pucdetails");
+
+                entity.Property(e => e.Pucid)
+                    .HasColumnName("pucid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Institutionname)
+                    .IsRequired()
+                    .HasColumnName("institutionname");
+
+                entity.Property(e => e.Percentage)
+                    .HasColumnName("percentage")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Yearofpassing)
+                    .IsRequired()
+                    .HasColumnName("yearofpassing");
+            });
+
             modelBuilder.Entity<Roles>(entity =>
             {
                 entity.HasKey(e => e.Roleid)
@@ -301,6 +462,113 @@ namespace Dhrms.DataAccess.Models
                     .IsRequired()
                     .HasColumnName("rolename")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Secondaryeducationaldetails>(entity =>
+            {
+                entity.HasKey(e => e.Secondaryeducationalid)
+                    .HasName("secondaryeducationaldetails_pkey");
+
+                entity.ToTable("secondaryeducationaldetails");
+
+                entity.Property(e => e.Secondaryeducationalid)
+                    .HasColumnName("secondaryeducationalid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Pucid).HasColumnName("pucid");
+
+                entity.Property(e => e.Sslcid).HasColumnName("sslcid");
+
+                entity.HasOne(d => d.Puc)
+                    .WithMany(p => p.Secondaryeducationaldetails)
+                    .HasForeignKey(d => d.Pucid)
+                    .HasConstraintName("fk_puc");
+
+                entity.HasOne(d => d.Sslc)
+                    .WithMany(p => p.Secondaryeducationaldetails)
+                    .HasForeignKey(d => d.Sslcid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_sslc");
+            });
+
+            modelBuilder.Entity<Skills>(entity =>
+            {
+                entity.HasKey(e => e.Skillid)
+                    .HasName("skills_pkey");
+
+                entity.ToTable("skills");
+
+                entity.Property(e => e.Skillid)
+                    .HasColumnName("skillid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Candidateid).HasColumnName("candidateid");
+
+                entity.Property(e => e.Primaryskill)
+                    .IsRequired()
+                    .HasColumnName("primaryskill");
+
+                entity.Property(e => e.Secondaryskill)
+                    .IsRequired()
+                    .HasColumnName("secondaryskill");
+
+                entity.HasOne(d => d.Candidate)
+                    .WithMany(p => p.Skills)
+                    .HasForeignKey(d => d.Candidateid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_candidate");
+            });
+
+            modelBuilder.Entity<Sslcdetails>(entity =>
+            {
+                entity.HasKey(e => e.Sslcid)
+                    .HasName("sslcdetails_pkey");
+
+                entity.ToTable("sslcdetails");
+
+                entity.Property(e => e.Sslcid)
+                    .HasColumnName("sslcid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Institutionname)
+                    .IsRequired()
+                    .HasColumnName("institutionname");
+
+                entity.Property(e => e.Percentage)
+                    .HasColumnName("percentage")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Yearofpassing)
+                    .IsRequired()
+                    .HasColumnName("yearofpassing");
+            });
+
+            modelBuilder.Entity<Ugdetails>(entity =>
+            {
+                entity.HasKey(e => e.Ugid)
+                    .HasName("ugdetails_pkey");
+
+                entity.ToTable("ugdetails");
+
+                entity.Property(e => e.Ugid)
+                    .HasColumnName("ugid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Institutionname)
+                    .IsRequired()
+                    .HasColumnName("institutionname");
+
+                entity.Property(e => e.Percentage)
+                    .HasColumnName("percentage")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Streamname)
+                    .IsRequired()
+                    .HasColumnName("streamname");
+
+                entity.Property(e => e.Yearofpassing)
+                    .IsRequired()
+                    .HasColumnName("yearofpassing");
             });
 
             modelBuilder.Entity<Users>(entity =>

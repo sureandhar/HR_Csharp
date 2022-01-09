@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Dhrms.DataAccess;
 using Dhrms.DataAccess.Models;
 using Microsoft.AspNetCore.Cors;
+using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using AutoMapper;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -99,14 +103,45 @@ namespace Dhrms.WebService.Controllers
             }
         }
         [HttpPost]
-        public JsonResult AddCandidate(Candidatedetails candidate)
+        public JsonResult AddCandidate(object candidateObj)
         {
             try
             {
-                int status = _repository.AddCandidate(candidate);
+                
+                
+                
+                dynamic _candidaateObj = Newtonsoft.Json.JsonConvert.DeserializeObject(Convert.ToString(candidateObj));
+                
+                dynamic _candidate = _candidaateObj.candidatedetail;
+                dynamic _skill = _candidaateObj.skill;
+                dynamic _education = _candidaateObj.education;
+                dynamic _diploma = _education.diploma;
+                dynamic _ug = _education.ug;
+                dynamic _pg = _education.pg;
+                dynamic _sslc = _education.sslc;
+                dynamic _puc = _education.puc;
+                var config = new MapperConfiguration(cfg => { });
+                var mapper = config.CreateMapper();
+
+                Candidatedetails candidate = mapper.Map<Candidatedetails>(_candidate);
+
+                Skills skill = mapper.Map<Skills>(_skill);
+                int candidateid = 0;
+                int status = _repository.AddCandidate(candidate,out candidateid);
+
+                
+                //int status = -99;
                 string message = string.Empty;
                 if (status==0)
                 {
+                    if (skill!=null)
+                    {
+                        //adding candidateid to skill entity
+                        skill.Candidateid = candidateid;
+                        //call add method to insert
+                        _repository.AddCandidateSkill(skill);
+                    }
+                    
                     message = "Success";
                 }
                 else if(status==1)
@@ -153,7 +188,8 @@ namespace Dhrms.WebService.Controllers
             {
                 return Json("No Records Found");
             }
-            return Json(CandidateList);
+            
+            return Json(JsonConvert.SerializeObject(CandidateList, Formatting.Indented));
         }
 
         [HttpGet]

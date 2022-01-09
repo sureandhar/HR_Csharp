@@ -121,9 +121,11 @@ namespace Dhrms.DataAccess
         /// </summary>
         /// <param name="interviwer"></param>
         /// <returns></returns>
-        public int AddCandidate(Candidatedetails candidate)
+        public int AddCandidate(Candidatedetails candidate, out int candidateId)
         {
+
             int status = 1;
+            candidateId = 0;
             int result = 0;
             NpgsqlParameter prmfirstname = new NpgsqlParameter("@firstname", candidate.Firstname);
             NpgsqlParameter prmlastname = new NpgsqlParameter("@lastname", candidate.Lastname);
@@ -138,16 +140,15 @@ namespace Dhrms.DataAccess
             NpgsqlParameter prmcity = new NpgsqlParameter("@city", candidate.City);
 
             NpgsqlParameter prmstatus = new NpgsqlParameter("@status", status);
-            //NpgsqlParameter prmstatus = new NpgsqlParameter("@status", status)
-            //{
-            //    Direction = ParameterDirection.InputOutput
-            //};
-            prmstatus.Direction = System.Data.ParameterDirection.InputOutput; 
+            prmstatus.Direction = System.Data.ParameterDirection.InputOutput;
+            NpgsqlParameter prmcandidateId= new NpgsqlParameter("@candidate_id", candidateId);
+            prmcandidateId.Direction = System.Data.ParameterDirection.InputOutput; 
             try
             {
-                result = context.Database.ExecuteSqlRaw("CALL usp_addcandidate (@firstname,@lastname,@email,@dob,@contactnumber,@roleid,@gender,@currentaddress,@permanentaddress,@city,@status)"
-                    ,prmfirstname,prmlastname,prmemail,prmdob,prmcontactnumber,prmroleid,prmgender,prmcurraddress,prmpermntaddress,prmcity,prmstatus);
+                result = context.Database.ExecuteSqlRaw("CALL usp_addcandidate (@firstname,@lastname,@email,@dob,@contactnumber,@roleid,@gender,@currentaddress,@permanentaddress,@city,@status,@candidate_id)"
+                    , prmfirstname,prmlastname,prmemail,prmdob,prmcontactnumber,prmroleid,prmgender,prmcurraddress,prmpermntaddress,prmcity,prmstatus,prmcandidateId);
                 status = prmstatus.Value!=null ? Convert.ToInt32(prmstatus.Value):1;
+                candidateId = prmcandidateId.Value!=null ? Convert.ToInt32(prmcandidateId.Value):0;
             }
             catch (Exception ex)
             {
@@ -182,6 +183,23 @@ namespace Dhrms.DataAccess
                 InterviewerdetailsList = null;
             }
             return InterviewerdetailsList;
+        }
+
+
+        public int AddCandidateSkill(Skills skill)
+        {
+            int status = 0;
+            try
+            {
+                var result=context.Skills.Add(skill);
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return status;
         }
     }
 }
