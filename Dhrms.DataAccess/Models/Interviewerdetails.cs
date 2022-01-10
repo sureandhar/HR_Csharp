@@ -17,7 +17,7 @@ namespace Dhrms.DataAccess.Models
         public string Unitname { get; set; }
         public string Primaryskills { get; set; }
         public string Gender { get; set; }
-        [NotMapped]
+		[NotMapped]
         public int RoleId { get; set; }
         [NotMapped]
         public string Password { get; set; }

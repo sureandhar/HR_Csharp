@@ -31,6 +31,7 @@ namespace Dhrms.DataAccess.Models
         public virtual DbSet<Sslcdetails> Sslcdetails { get; set; }
         public virtual DbSet<Ugdetails> Ugdetails { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Workexperiencedetails> Workexperiencedetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -608,6 +609,46 @@ namespace Dhrms.DataAccess.Models
                     .HasForeignKey(d => d.Roleid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_roles");
+            });
+
+            modelBuilder.Entity<Workexperiencedetails>(entity =>
+            {
+                entity.HasKey(e => e.Experienceid)
+                    .HasName("workexperiencedetails_pkey");
+
+                entity.ToTable("workexperiencedetails");
+
+                entity.Property(e => e.Experienceid)
+                    .HasColumnName("experienceid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Candidateid).HasColumnName("candidateid");
+
+                entity.Property(e => e.Companyname)
+                    .IsRequired()
+                    .HasColumnName("companyname");
+
+                entity.Property(e => e.Domainname)
+                    .IsRequired()
+                    .HasColumnName("domainname");
+
+                entity.Property(e => e.Noofmonths)
+                    .HasColumnName("noofmonths")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Noofyears)
+                    .HasColumnName("noofyears")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Project)
+                    .IsRequired()
+                    .HasColumnName("project");
+
+                entity.HasOne(d => d.Candidate)
+                    .WithMany(p => p.Workexperiencedetails)
+                    .HasForeignKey(d => d.Candidateid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_candidate");
             });
 
             OnModelCreatingPartial(modelBuilder);

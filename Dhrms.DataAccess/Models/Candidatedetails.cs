@@ -12,6 +12,7 @@ namespace Dhrms.DataAccess.Models
             Appliedjobs = new HashSet<Appliedjobs>();
             Educationaldetails = new HashSet<Educationaldetails>();
             Skills = new HashSet<Skills>();
+            Workexperiencedetails = new HashSet<Workexperiencedetails>();
         }
 
         public int Candidateid { get; set; }
@@ -29,11 +30,9 @@ namespace Dhrms.DataAccess.Models
         public int RoleId { get; set; }
         [JsonIgnore]
         public virtual Users User { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Appliedjobs> Appliedjobs { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Educationaldetails> Educationaldetails { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Skills> Skills { get; set; }
+        public virtual ICollection<Workexperiencedetails> Workexperiencedetails { get; set; }
     }
 }

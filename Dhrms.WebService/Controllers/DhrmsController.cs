@@ -120,12 +120,14 @@ namespace Dhrms.WebService.Controllers
                 dynamic _pg = _education.pg;
                 dynamic _sslc = _education.sslc;
                 dynamic _puc = _education.puc;
+                dynamic _experience = _candidaateObj.experience;
                 var config = new MapperConfiguration(cfg => { });
                 var mapper = config.CreateMapper();
 
                 Candidatedetails candidate = mapper.Map<Candidatedetails>(_candidate);
 
                 Skills skill = mapper.Map<Skills>(_skill);
+                Workexperiencedetails Experience = mapper.Map<Workexperiencedetails>(_experience);
                 int candidateid = 0;
                 int status = _repository.AddCandidate(candidate,out candidateid);
 

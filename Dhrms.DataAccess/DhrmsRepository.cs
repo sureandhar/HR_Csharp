@@ -192,7 +192,7 @@ namespace Dhrms.DataAccess
             try
             {
                 var result=context.Skills.Add(skill);
-
+                context.SaveChanges();
 
             }
             catch (Exception ex)
