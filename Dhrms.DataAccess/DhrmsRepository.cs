@@ -66,10 +66,29 @@ namespace Dhrms.DataAccess
         public List<Candidatedetails> GetAllCandidate()
         {
             List<Candidatedetails> CandidateList = null;
+            List<Skills> SkillList = null;
+            string Skills = string.Empty;
             try
             {
                 
                 CandidateList = context.Candidatedetails.ToList();
+                SkillList = context.Skills.ToList();
+
+                foreach (var item in CandidateList)
+                {
+
+                    if (item.Skills.Count > 0)
+                    {
+                        Skills _skill = item.Skills.First();
+                        item.Skillset = _skill.Primaryskill + "," + _skill.Secondaryskill;
+                    }
+                    else
+                    {
+                        item.Skillset = Skills;
+                    }
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -197,9 +216,176 @@ namespace Dhrms.DataAccess
             }
             catch (Exception ex)
             {
-
+                status = -1;
             }
             return status;
         }
+        public int AddCandidateExperience(Workexperiencedetails experience)
+        {
+            int status = 0;
+            try
+            {
+                var result=context.Workexperiencedetails.Add(experience);
+                context.SaveChanges();
+
+
+            }
+            catch (Exception ex)
+            {
+                status = -1;
+            }
+            return status;
+        }
+        public int AddCandidateEducation(int candidateId,Sslcdetails sslc,Pucdetails puc, Diplomadetails diploma, Ugdetails ug, Pgdetails pg)
+        {
+            int status = 0;
+            int sId = 0;
+            int hId = 0;
+            Secondaryeducationaldetails sDetails = new Secondaryeducationaldetails();
+            Highereducationaldetails hDetails = new Highereducationaldetails();
+            Educationaldetails eDetails = new Educationaldetails();
+            try
+            {
+                //Secondary education section
+                if (sslc != null && puc != null)
+                {
+                    var sslcResult = context.Sslcdetails.Add(sslc);
+                    context.SaveChanges();
+                    List<Sslcdetails> _rt = context.Sslcdetails.ToList();
+                    int SSLCId = context.Sslcdetails.ToList().Last().Sslcid;
+                    var pucResult = context.Pucdetails.Add(puc);
+                    context.SaveChanges();
+                    int PUCId = context.Pucdetails.ToList().Last().Pucid;
+                    sDetails.Sslcid = SSLCId;
+                    sDetails.Pucid = PUCId;
+                    if (SSLCId != 0 && PUCId != 0)
+                    {
+                        var result = context.Secondaryeducationaldetails.Add(sDetails);
+                        context.SaveChanges();
+                        sId = context.Secondaryeducationaldetails.ToList().Last().Secondaryeducationalid;
+                    }
+                    else
+                    {
+                        status = -1;
+                    }
+                }
+                else
+                {
+                    if (sslc != null)
+                    {
+                        var sslcResult = context.Sslcdetails.Add(sslc);
+                        context.SaveChanges();
+                        int SSLCId = context.Sslcdetails.ToList().Last().Sslcid;
+                        sDetails.Sslcid = SSLCId;
+                        if (SSLCId != 0)
+                        {
+                            var result = context.Secondaryeducationaldetails.Add(sDetails);
+                            context.SaveChanges();
+                            sId = context.Secondaryeducationaldetails.ToList().Last().Secondaryeducationalid;
+
+                        }
+                        else
+                        {
+                            status = -1;
+                        }
+                    }
+
+                }
+                //Higher education section
+
+                if (diploma != null || ug != null || pg != null)
+                {
+
+                    if (diploma != null)
+                    {
+                        var diplomaResult = context.Diplomadetails.Add(diploma);
+                        context.SaveChanges();
+                        int diplomaId = context.Diplomadetails.ToList().Last().Diplomaid;
+                        hDetails.Diplomaid = diplomaId;
+                        if (diplomaId != 0)
+                        {
+                            var result = context.Highereducationaldetails.Add(hDetails);
+                            context.SaveChanges();
+                            hId = context.Highereducationaldetails.ToList().Last().Highereducationalid;
+
+                        }
+                        else
+                        {
+                            status = -1;
+                        }
+                    }
+                    if (ug != null)
+                    {
+                        var ugResult = context.Ugdetails.Add(ug);
+                        context.SaveChanges();
+                        int ugId = context.Ugdetails.ToList().Last().Ugid;
+                        hDetails.Ugid = ugId;
+                        if (ugId != 0)
+                        {
+                            if (hId!=0 && diploma!=null)
+                            {
+                                Highereducationaldetails _hDetails= context.Highereducationaldetails.Find(hId);
+                                _hDetails.Ugid = ugId;
+                                context.SaveChanges();
+                            }
+                            else
+                            {
+                                var result = context.Highereducationaldetails.Add(hDetails);
+                                context.SaveChanges();
+                                hId = context.Highereducationaldetails.ToList().Last().Highereducationalid;
+                            }
+                        }
+                        else
+                        {
+                            status = -1;
+                        }
+                    }
+                    if (pg != null)
+                    {
+                        var pgResult = context.Pgdetails.Add(pg);
+                        context.SaveChanges();
+                        int pgId = context.Pgdetails.ToList().Last().Pgid;
+                        hDetails.Pgid = pgId;
+                        if (pgId != 0)
+                        {
+                            if (hId!=0 && (diploma!=null || ug!=null))
+                            {
+                                Highereducationaldetails _hDetails= context.Highereducationaldetails.Find(hId);
+                                _hDetails.Pgid = pgId;
+                                context.SaveChanges();
+                            }
+                            else
+                            {
+                                var result = context.Highereducationaldetails.Add(hDetails);
+                                context.SaveChanges();
+                                hId = context.Highereducationaldetails.ToList().Last().Highereducationalid;
+                            }
+                        }
+                        else
+                        {
+                            status = -1;
+                        }
+                    }
+
+
+
+                }
+
+                if (sId!=0 && hId!=0)
+                {
+                    eDetails.Candidateid = candidateId;
+                    eDetails.Highereducationalid = hId;
+                    eDetails.Secondaryeducationalid = sId;
+                    context.Educationaldetails.Add(eDetails);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                status = -1;
+            }
+            return status;
+        }
+        
     }
 }

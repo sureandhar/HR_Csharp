@@ -124,10 +124,18 @@ namespace Dhrms.WebService.Controllers
                 var config = new MapperConfiguration(cfg => { });
                 var mapper = config.CreateMapper();
 
+                
                 Candidatedetails candidate = mapper.Map<Candidatedetails>(_candidate);
 
-                Skills skill = mapper.Map<Skills>(_skill);
-                Workexperiencedetails Experience = mapper.Map<Workexperiencedetails>(_experience);
+                Skills Skill = mapper.Map<Skills>(_skill);
+                Sslcdetails Sslc = mapper.Map<Sslcdetails>(_sslc);
+                Pucdetails Puc = mapper.Map<Pucdetails>(_puc);
+                Diplomadetails Diploma = mapper.Map<Diplomadetails>(_diploma);
+                Ugdetails Ug = mapper.Map<Ugdetails>(_ug);
+                Pgdetails Pg = mapper.Map<Pgdetails>(_pg);
+                List<dynamic> experienceList = _experience.ToObject<List<dynamic>>();
+
+
                 int candidateid = 0;
                 int status = _repository.AddCandidate(candidate,out candidateid);
 
@@ -136,12 +144,44 @@ namespace Dhrms.WebService.Controllers
                 string message = string.Empty;
                 if (status==0)
                 {
-                    if (skill!=null)
+                    if (Skill != null)
                     {
                         //adding candidateid to skill entity
-                        skill.Candidateid = candidateid;
+                        Skill.Candidateid = candidateid;
                         //call add method to insert
-                        _repository.AddCandidateSkill(skill);
+                        int skillStatus= _repository.AddCandidateSkill(Skill);
+                        if (skillStatus==-1)
+                        {
+                            return Json("Failed to add Skills");
+                        }
+                    }
+                    if (_experience!=null)
+                    {
+                        
+                        //call add method to insert
+                        foreach (var item in experienceList)
+                        {
+                            Workexperiencedetails Experience = mapper.Map<Workexperiencedetails>(item);
+                            //adding candidateid to skill entity
+                            Experience.Candidateid = candidateid;
+
+                            int experienceStatus = _repository.AddCandidateExperience(Experience);
+                            if (experienceStatus == -1)
+                            {
+                                return Json("Failed to add Experience");
+                            }
+                        }
+                       
+                        
+                    }
+                    if (_education!=null)
+                    {
+                        //call add method to insert sslc,puc,diploma,ug,pg
+                        int educationStatus = _repository.AddCandidateEducation(candidateid, Sslc, Puc, Diploma, Ug, Pg);
+                        if (educationStatus == -1)
+                        {
+                            return Json("Failed to add Education");
+                        }
                     }
                     
                     message = "Success";
@@ -190,8 +230,13 @@ namespace Dhrms.WebService.Controllers
             {
                 return Json("No Records Found");
             }
+            var settings = new JsonSerializerSettings();
+            // This tells your serializer that multiple references are okay.
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            
             //used JSON type to preserve same format case
-            return Json(JsonConvert.SerializeObject(CandidateList, Formatting.Indented));
+            return Json(JsonConvert.SerializeObject(CandidateList, settings));
+            //return Json(CandidateList);
         }
 
         [HttpGet]

@@ -37,7 +37,7 @@ namespace Dhrms.DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
             }
         }
@@ -147,7 +147,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Diplomaid)
                     .HasColumnName("diplomaid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Institutionname)
                     .IsRequired()
@@ -173,9 +173,13 @@ namespace Dhrms.DataAccess.Models
 
                 entity.ToTable("educationaldetails");
 
+                entity.HasIndex(e => e.Candidateid)
+                    .HasName("educationaldetails_candidateid_key")
+                    .IsUnique();
+
                 entity.Property(e => e.Educationalid)
                     .HasColumnName("educationalid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Candidateid).HasColumnName("candidateid");
 
@@ -186,8 +190,8 @@ namespace Dhrms.DataAccess.Models
                 entity.Property(e => e.Secondaryeducationalid).HasColumnName("secondaryeducationalid");
 
                 entity.HasOne(d => d.Candidate)
-                    .WithMany(p => p.Educationaldetails)
-                    .HasForeignKey(d => d.Candidateid)
+                    .WithOne(p => p.Educationaldetails)
+                    .HasForeignKey<Educationaldetails>(d => d.Candidateid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_candidate");
 
@@ -213,7 +217,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Highereducationalid)
                     .HasColumnName("highereducationalid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Diplomaid).HasColumnName("diplomaid");
 
@@ -405,7 +409,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Pgid)
                     .HasColumnName("pgid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Institutionname)
                     .IsRequired()
@@ -433,7 +437,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Pucid)
                     .HasColumnName("pucid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Institutionname)
                     .IsRequired()
@@ -474,7 +478,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Secondaryeducationalid)
                     .HasColumnName("secondaryeducationalid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Pucid).HasColumnName("pucid");
 
@@ -501,7 +505,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Skillid)
                     .HasColumnName("skillid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Candidateid).HasColumnName("candidateid");
 
@@ -529,7 +533,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Sslcid)
                     .HasColumnName("sslcid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Institutionname)
                     .IsRequired()
@@ -553,7 +557,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Ugid)
                     .HasColumnName("ugid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Institutionname)
                     .IsRequired()
@@ -620,7 +624,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Experienceid)
                     .HasColumnName("experienceid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Candidateid).HasColumnName("candidateid");
 
