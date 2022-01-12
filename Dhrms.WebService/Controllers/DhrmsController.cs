@@ -258,5 +258,27 @@ namespace Dhrms.WebService.Controllers
             return Json(InterviewerdetailsList);
 
         }
+        [HttpGet]
+        public JsonResult GetCandidate(int id)
+        {
+            Candidatedetails candidatedetail = null;
+            try
+            {
+                candidatedetail = _repository.GetCandidate(id);
+                if (candidatedetail == null)
+                {
+                    return Json("No Records Found");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("No Records Found");
+            }
+            var settings = new JsonSerializerSettings();
+            // This tells your serializer that multiple references are okay.
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            return Json(JsonConvert.SerializeObject(candidatedetail, settings));
+
+        }
     }
 }

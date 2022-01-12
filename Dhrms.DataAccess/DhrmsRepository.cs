@@ -96,6 +96,40 @@ namespace Dhrms.DataAccess
             }
             return CandidateList;
         }
+        public Candidatedetails GetCandidate(int id)
+        {
+            Candidatedetails CandidateDetail = null;
+            List<Skills> SkillList = null;
+            string Skills = string.Empty;
+            try
+            {
+
+                List<Candidatedetails> _candidateList = context.Candidatedetails.ToList();
+                foreach (var item in _candidateList)
+                {
+                    if (item.Candidateid==id)
+                    {
+                        CandidateDetail = item;
+                    }
+                }
+                SkillList = context.Skills.ToList();
+                if (CandidateDetail.Skills.Count>0)
+                {
+                    CandidateDetail.Skillset = CandidateDetail.Skills.First().Primaryskill + "," + CandidateDetail.Skills.First().Secondaryskill;
+                }
+                else
+                {
+                    CandidateDetail.Skillset = string.Empty;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CandidateDetail = null;
+            }
+            return CandidateDetail;
+        }
+
 
         /// <summary>
         /// This method will generate user based on the roles with temp password and also add interviewer details in interviewerdetails table
