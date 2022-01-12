@@ -100,6 +100,7 @@ namespace Dhrms.DataAccess
         {
             Candidatedetails CandidateDetail = null;
             List<Skills> SkillList = null;
+            List<Workexperiencedetails> WorkexperienceList = null;
             string Skills = string.Empty;
             try
             {
@@ -112,6 +113,18 @@ namespace Dhrms.DataAccess
                         CandidateDetail = item;
                     }
                 }
+                WorkexperienceList = context.Workexperiencedetails.ToList();
+                if (WorkexperienceList.Count>0)
+                {
+                    foreach (var item in WorkexperienceList)
+                    {
+                        if (item.Candidateid == id)
+                        {
+                            CandidateDetail.Workexperiencedetails.Add(item);
+                        }
+                    }
+                }
+                
                 SkillList = context.Skills.ToList();
                 if (CandidateDetail.Skills.Count>0)
                 {
@@ -121,6 +134,7 @@ namespace Dhrms.DataAccess
                 {
                     CandidateDetail.Skillset = string.Empty;
                 }
+
 
             }
             catch (Exception ex)
