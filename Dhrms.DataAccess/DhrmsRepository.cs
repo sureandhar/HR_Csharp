@@ -434,6 +434,40 @@ namespace Dhrms.DataAccess
             }
             return status;
         }
-        
+
+        public int Updatepassword(string Email, string TempPassword,string NewPassword)
+        {
+            List<Users> UsersList = context.Users.ToList();
+            int status = 0;
+            try
+            {
+                Users _user = UsersList.Where(i => i.Email == Email).FirstOrDefault();
+                if (_user!=null)
+                {
+                    if (_user.Userpassword==TempPassword)
+                    {
+                        _user.Userpassword = NewPassword;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        status = 2;
+                    }
+                    
+                    
+                }
+                else
+                {
+                    status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                status = -1;
+            }
+            return status;
+        }
+
+        //end
     }
 }

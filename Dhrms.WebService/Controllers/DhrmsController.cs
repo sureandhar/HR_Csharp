@@ -280,5 +280,44 @@ namespace Dhrms.WebService.Controllers
             return Json(JsonConvert.SerializeObject(candidatedetail, settings));
 
         }
+        [HttpPost]
+        public JsonResult Updatepassword(dynamic passwordObj)
+        {
+            string message = "";
+            try
+            {
+                //int status = _repository.Updatepassword(Email, TempPassword,Password);
+                dynamic _passwordObj = Newtonsoft.Json.JsonConvert.DeserializeObject(Convert.ToString(passwordObj));
+
+                string _email = _passwordObj.Email;
+                string _temppass = _passwordObj.TempPassword;
+                string _pass = _passwordObj.Password;
+                int status = _repository.Updatepassword(_email, _temppass, _pass);
+
+                if (status==0)
+                {
+                    message= "success";
+                }
+                else if(status==1)
+                {
+                    message ="No users found";
+                }
+                else if(status==2)
+                {
+                    message="Temporary password expired";
+                }
+                else if(status==-1)
+                {
+                    message="Failed to update try after sometime";
+                }
+            }
+            catch (Exception ex)
+            {
+                message="Failed to update try after sometime";
+            }
+            return Json(message);
+        }
+
+        //end
     }
 }

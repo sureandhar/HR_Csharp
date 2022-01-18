@@ -7,6 +7,11 @@ namespace Dhrms.DataAccess.Models
 {
     public partial class Interviewerdetails
     {
+        public Interviewerdetails()
+        {
+            Interviewdetails = new HashSet<Interviewdetails>();
+        }
+
         public int Intervievwerid { get; set; }
         public string Firstname { get; set; }
         public int Userid { get; set; }
@@ -17,11 +22,12 @@ namespace Dhrms.DataAccess.Models
         public string Unitname { get; set; }
         public string Primaryskills { get; set; }
         public string Gender { get; set; }
-		[NotMapped]
+        [NotMapped]
         public int RoleId { get; set; }
         [NotMapped]
         public string Password { get; set; }
         [JsonIgnore]
         public virtual Users User { get; set; }
+        public virtual ICollection<Interviewdetails> Interviewdetails { get; set; }
     }
 }

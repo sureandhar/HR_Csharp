@@ -21,6 +21,7 @@ namespace Dhrms.DataAccess.Models
         public virtual DbSet<Educationaldetails> Educationaldetails { get; set; }
         public virtual DbSet<Highereducationaldetails> Highereducationaldetails { get; set; }
         public virtual DbSet<Hr> Hr { get; set; }
+        public virtual DbSet<Interviewdetails> Interviewdetails { get; set; }
         public virtual DbSet<Interviewerdetails> Interviewerdetails { get; set; }
         public virtual DbSet<Jobs> Jobs { get; set; }
         public virtual DbSet<Pgdetails> Pgdetails { get; set; }
@@ -37,7 +38,7 @@ namespace Dhrms.DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
             }
         }
@@ -288,6 +289,51 @@ namespace Dhrms.DataAccess.Models
                     .HasForeignKey(d => d.Userid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("user_fk");
+            });
+
+            modelBuilder.Entity<Interviewdetails>(entity =>
+            {
+                entity.HasKey(e => e.Interviewid)
+                    .HasName("interviewdetails_pkey");
+
+                entity.ToTable("interviewdetails");
+
+                entity.Property(e => e.Interviewid)
+                    .HasColumnName("interviewid")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Attended)
+                    .IsRequired()
+                    .HasColumnName("attended")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Candidateid).HasColumnName("candidateid");
+
+                entity.Property(e => e.Intervievwerid).HasColumnName("intervievwerid");
+
+                entity.Property(e => e.Interviewerfeedback)
+                    .IsRequired()
+                    .HasColumnName("interviewerfeedback");
+
+                entity.Property(e => e.Scheduleddate)
+                    .HasColumnName("scheduleddate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasColumnName("status")
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Candidate)
+                    .WithMany(p => p.Interviewdetails)
+                    .HasForeignKey(d => d.Candidateid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_candidate");
+
+                entity.HasOne(d => d.Intervievwer)
+                    .WithMany(p => p.Interviewdetails)
+                    .HasForeignKey(d => d.Intervievwerid)
+                    .HasConstraintName("fk_intervievwer");
             });
 
             modelBuilder.Entity<Interviewerdetails>(entity =>
