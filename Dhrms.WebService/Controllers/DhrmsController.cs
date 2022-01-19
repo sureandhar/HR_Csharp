@@ -153,7 +153,8 @@ namespace Dhrms.WebService.Controllers
                         int skillStatus= _repository.AddCandidateSkill(Skill);
                         if (skillStatus==-1)
                         {
-                            return Json("Failed to add Skills");
+                            //return Json("Failed to add Skills");
+                            return Json("-3");
                         }
                     }
                     if (_experience!=null)
@@ -169,7 +170,8 @@ namespace Dhrms.WebService.Controllers
                             int experienceStatus = _repository.AddCandidateExperience(Experience);
                             if (experienceStatus == -1)
                             {
-                                return Json("Failed to add Experience");
+                                //return Json("Failed to add Experience");
+                                return Json("-4");
                             }
                         }
                        
@@ -181,7 +183,8 @@ namespace Dhrms.WebService.Controllers
                         int educationStatus = _repository.AddCandidateEducation(candidateid, Sslc, Puc, Diploma, Ug, Pg);
                         if (educationStatus == -1)
                         {
-                            return Json("Failed to add Education");
+                            //return Json("Failed to add Education");
+                            return Json("-5");
                         }
                     }
                     
@@ -191,10 +194,6 @@ namespace Dhrms.WebService.Controllers
                 {
                     message = "No changes were made Try again after somtime ";
                 }
-                //else if(status==-1)
-                //{
-                //    message = "Invalid Email address ";
-                //}
                 else if(status ==-1)
                 {
                     message = "Entered email already exists";
@@ -207,11 +206,12 @@ namespace Dhrms.WebService.Controllers
                 {
                     message = "Something went wrong Try again after somtime";
                 }
-                return Json(message);
+                return Json(status);
             }
             catch (Exception ex)
             {
-                return Json("Something went wrong");
+                //return Json("Something went wrong");
+                return Json("-99");
             }
         }
 
