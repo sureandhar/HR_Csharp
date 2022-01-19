@@ -38,7 +38,7 @@ namespace Dhrms.DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
             }
         }
@@ -318,6 +318,8 @@ namespace Dhrms.DataAccess.Models
                 entity.Property(e => e.Scheduleddate)
                     .HasColumnName("scheduleddate")
                     .HasColumnType("date");
+
+                entity.Property(e => e.Scheduledtime).HasColumnName("scheduledtime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()

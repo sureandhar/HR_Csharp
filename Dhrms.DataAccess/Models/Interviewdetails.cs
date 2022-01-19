@@ -12,6 +12,7 @@ namespace Dhrms.DataAccess.Models
         public DateTime Scheduleddate { get; set; }
         public string Attended { get; set; }
         public string Interviewerfeedback { get; set; }
+        public string Scheduledtime { get; set; }
 
         public virtual Candidatedetails Candidate { get; set; }
         public virtual Interviewerdetails Intervievwer { get; set; }

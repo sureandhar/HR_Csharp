@@ -30,6 +30,10 @@ namespace Dhrms.DataAccess.Models
         public int RoleId { get; set; }
         [NotMapped]
         public string Skillset { get; set; }
+        [NotMapped]
+        public string Scheduleddate { get; set; }
+        [NotMapped]
+        public string Status { get; set; }
         [JsonIgnore]
         public virtual Users User { get; set; }
         public virtual Educationaldetails Educationaldetails { get; set; }

@@ -121,6 +121,7 @@ namespace Dhrms.WebService.Controllers
                 dynamic _sslc = _education.sslc;
                 dynamic _puc = _education.puc;
                 dynamic _experience = _candidaateObj.experience;
+                //mapping configuration
                 var config = new MapperConfiguration(cfg => { });
                 var mapper = config.CreateMapper();
 
@@ -313,7 +314,42 @@ namespace Dhrms.WebService.Controllers
             }
             catch (Exception ex)
             {
-                message="Failed to update try after sometime";
+                message="Failed to update try again after sometime";
+            }
+            return Json(message);
+        }
+
+
+        public JsonResult Scheduleinterview(dynamic scheduleObj)
+        {
+            string message = "";
+            try
+            {
+                dynamic _scheduleObj = Newtonsoft.Json.JsonConvert.DeserializeObject(Convert.ToString(scheduleObj));
+
+                //mapping configuration
+                var config = new MapperConfiguration(cfg => { });
+                var mapper = config.CreateMapper();
+
+                Interviewdetails scheduleDetails = mapper.Map<Interviewdetails>(_scheduleObj);
+
+                int status = _repository.Scheduleinterview(scheduleDetails);
+                if (status == 0)
+                {
+                    message = "success";
+                }
+                else if (status == 1)
+                {
+                    message = "value should not null";
+                }
+                else if (status == -1)
+                {
+                    message = "Failed to update try after sometime";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = "Failed to schedule interview try again after sometime";
             }
             return Json(message);
         }

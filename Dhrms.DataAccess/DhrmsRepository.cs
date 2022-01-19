@@ -67,12 +67,14 @@ namespace Dhrms.DataAccess
         {
             List<Candidatedetails> CandidateList = null;
             List<Skills> SkillList = null;
+            List<Interviewdetails> InterviewList = null;
             string Skills = string.Empty;
             try
             {
                 
                 CandidateList = context.Candidatedetails.ToList();
                 SkillList = context.Skills.ToList();
+                InterviewList = context.Interviewdetails.ToList();
 
                 foreach (var item in CandidateList)
                 {
@@ -85,6 +87,17 @@ namespace Dhrms.DataAccess
                     else
                     {
                         item.Skillset = Skills;
+                    }
+                    if (item.Interviewdetails.Count > 0)
+                    {
+                        Interviewdetails _interview = item.Interviewdetails.First();
+                        item.Status = _interview.Status;
+                        item.Scheduleddate = _interview.Scheduleddate.ToString();
+                    }
+                    else
+                    {
+                        item.Status = "Not scheduled";
+                        item.Scheduleddate = string.Empty;
                     }
 
                 }
@@ -455,6 +468,28 @@ namespace Dhrms.DataAccess
                     }
                     
                     
+                }
+                else
+                {
+                    status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                status = -1;
+            }
+            return status;
+        }
+
+        public int Scheduleinterview(Interviewdetails scheduleObj)
+        {
+            int status = 0;
+            try
+            {
+                if (scheduleObj!=null)
+                {
+                    context.Interviewdetails.Add(scheduleObj);
+                    context.SaveChanges();
                 }
                 else
                 {
