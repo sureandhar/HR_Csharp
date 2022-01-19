@@ -228,7 +228,14 @@ namespace Dhrms.DataAccess
                 result = context.Database.ExecuteSqlRaw("CALL usp_addcandidate (@firstname,@lastname,@email,@dob,@contactnumber,@roleid,@gender,@currentaddress,@permanentaddress,@city,@status,@candidate_id)"
                     , prmfirstname,prmlastname,prmemail,prmdob,prmcontactnumber,prmroleid,prmgender,prmcurraddress,prmpermntaddress,prmcity,prmstatus,prmcandidateId);
                 status = prmstatus.Value!=null ? Convert.ToInt32(prmstatus.Value):1;
-                candidateId = prmcandidateId.Value!=null ? Convert.ToInt32(prmcandidateId.Value):0;
+                if (status==0)
+                {
+                    candidateId = prmcandidateId.Value != null ? Convert.ToInt32(prmcandidateId.Value) : 0;
+                }
+                else
+                {
+                    candidateId = 0;
+                }
             }
             catch (Exception ex)
             {
