@@ -300,7 +300,7 @@ namespace Dhrms.DataAccess.Models
 
                 entity.Property(e => e.Interviewid)
                     .HasColumnName("interviewid")
-                    .ValueGeneratedNever();
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Attended)
                     .IsRequired()
@@ -319,7 +319,9 @@ namespace Dhrms.DataAccess.Models
                     .HasColumnName("scheduleddate")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Scheduledtime).HasColumnName("scheduledtime");
+                entity.Property(e => e.Scheduledtime)
+                    .IsRequired()
+                    .HasColumnName("scheduledtime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()

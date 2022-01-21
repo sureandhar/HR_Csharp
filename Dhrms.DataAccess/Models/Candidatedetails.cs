@@ -33,6 +33,8 @@ namespace Dhrms.DataAccess.Models
         [NotMapped]
         public string Scheduleddate { get; set; }
         [NotMapped]
+        public string Scheduledtime{ get; set; }
+        [NotMapped]
         public string Status { get; set; }
         [JsonIgnore]
         public virtual Users User { get; set; }

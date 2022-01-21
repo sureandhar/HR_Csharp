@@ -93,6 +93,7 @@ namespace Dhrms.DataAccess
                         Interviewdetails _interview = item.Interviewdetails.First();
                         item.Status = _interview.Status;
                         item.Scheduleddate = _interview.Scheduleddate.ToString();
+                        item.Scheduledtime = _interview.Scheduledtime.ToString();
                     }
                     else
                     {
@@ -146,6 +147,18 @@ namespace Dhrms.DataAccess
                 else
                 {
                     CandidateDetail.Skillset = string.Empty;
+                }
+                if (CandidateDetail.Interviewdetails.Count > 0)
+                {
+                    Interviewdetails _interview = CandidateDetail.Interviewdetails.First();
+                    CandidateDetail.Status = _interview.Status;
+                    CandidateDetail.Scheduleddate = _interview.Scheduleddate.ToString();
+                    CandidateDetail.Scheduledtime = _interview.Scheduledtime.ToString();
+                }
+                else
+                {
+                    CandidateDetail.Status = "Not scheduled";
+                    CandidateDetail.Scheduleddate = string.Empty;
                 }
 
 
@@ -510,6 +523,29 @@ namespace Dhrms.DataAccess
             return status;
         }
 
+        public List<Candidatedetails> getScheduledCandidates(int interviewerid)
+        {
+            List<Candidatedetails> candidateList = new List<Candidatedetails>();
+            try
+            {
+                List<Interviewdetails> _interviewList = context.Interviewdetails.ToList();
+               List<int> cIdList = (from interview in _interviewList where interview.Intervievwerid == interviewerid select interview.Candidateid).ToList();
+
+                if(cIdList!=null && cIdList.Count>0)
+                {
+                    foreach (var id in cIdList)
+                    {
+                        candidateList.Add(GetCandidate(id));
+                    }
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                candidateList = null;
+            }
+            return candidateList;
+        }
         //end
     }
 }
