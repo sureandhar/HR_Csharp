@@ -46,12 +46,20 @@ namespace Dhrms.DataAccess
                 if (UsersList!=null && UsersList.Where(i=>i.Email==EmailId).FirstOrDefault()!=null)
                 {
                     var RoleId = (from usr in UsersList where usr.Email == EmailId && usr.Userpassword == Password select usr.Roleid).FirstOrDefault();
-                    RoleName = (from role in RolesList where role.Roleid == RoleId select role.Rolename).FirstOrDefault();
-                   
+
+                    if (RoleId!=0)
+                    {
+                        RoleName = (from role in RolesList where role.Roleid == RoleId select role.Rolename).FirstOrDefault();
+                    }
+                    else
+                    {
+                        return RoleName = "-1";
+                    }
+
                 }
                 else
                 {
-                    return RoleName = "No user found";
+                    return RoleName = "-1";
                 }
 
                 return RoleName;
@@ -59,7 +67,7 @@ namespace Dhrms.DataAccess
             }
             catch (Exception ex)
             {
-                return RoleName = "Some thing went wrong!";
+                return RoleName = "-99";
             }
         }
 

@@ -10,6 +10,7 @@ using System.Text.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,6 +34,7 @@ namespace Dhrms.WebService.Controllers
         }
 
         [HttpGet]
+        //[Authorize]
         public JsonResult GetHRDetails()
         {
             List<Hr> hrlist = new List<Hr>();
@@ -216,6 +218,7 @@ namespace Dhrms.WebService.Controllers
         }
 
         [HttpGet]
+        //[Authorize]
         public JsonResult GetAllCandates()
         {
             List<Candidatedetails> CandidateList = new List<Candidatedetails>();

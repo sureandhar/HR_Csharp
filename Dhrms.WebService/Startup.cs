@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Dhrms.WebService
 {
@@ -25,11 +28,45 @@ namespace Dhrms.WebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //enable CORS for specific controller
-            services.AddCors(c => c.AddPolicy("dhrmscontrollerpolicy", builder =>
+            var _key = Configuration.GetValue<string>("Jwt:Key");
+            var _issuer = Configuration.GetValue<string>("Jwt:Issuer");
+            var _audience = Configuration.GetValue<string>("Jwt:Audience");
+            //JWT
+            services.AddAuthentication(opt =>
             {
-                builder.WithOrigins("http://localhost:4200").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-            }));
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    //server creating token
+                    ValidateIssuer = true,
+                    //client
+                    ValidateAudience=true,
+                    //secrect key
+                    ValidateIssuerSigningKey=true,
+                    
+                    ValidIssuer= _issuer,
+                    ValidAudience= _audience,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key))
+                };
+            });
+
+            //enable CORS for specific controller
+            //services.AddCors(c => c.AddPolicy("dhrmscontrollerpolicy", builder =>
+            //{
+            //    builder.WithOrigins("http://localhost:4200").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            //}));
+
+            //enable CORS for all origins
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers();
 
         }
@@ -45,7 +82,13 @@ namespace Dhrms.WebService
 
             app.UseHttpsRedirection();
             //To enable CORS policy globally
-            app.UseCors("dhrmscontrollerpolicy");
+            //app.UseCors("dhrmscontrollerpolicy");
+
+            //To enable CORS globally
+            app.UseCors("EnableCORS");
+
+            //To enable JWT authentication
+            app.UseAuthentication();
 
             app.UseRouting();
 
