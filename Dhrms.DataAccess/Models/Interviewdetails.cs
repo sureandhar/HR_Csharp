@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dhrms.DataAccess.Models
 {
@@ -14,6 +15,8 @@ namespace Dhrms.DataAccess.Models
         public string Attended { get; set; }
         public string Interviewerfeedback { get; set; }
         public string Roundname { get; set; }
+        [NotMapped]
+        public string Interviewername { get; set; }
 
         public virtual Candidatedetails Candidate { get; set; }
         public virtual Interviewerdetails Intervievwer { get; set; }

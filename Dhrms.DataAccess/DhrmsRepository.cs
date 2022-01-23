@@ -554,6 +554,33 @@ namespace Dhrms.DataAccess
             }
             return candidateList;
         }
+
+        public List<Interviewdetails> getCandidateInterviewdetails(int candidateId)
+        {
+            List<Interviewdetails> candidateInterInterviewdetailList = new List<Interviewdetails>();
+
+            try
+            {
+                List<Interviewdetails> _interviewdetailList = context.Interviewdetails.ToList();
+                List<Interviewerdetails> _interviewerdetailsList = context.Interviewerdetails.ToList();
+                candidateInterInterviewdetailList = (from interviewdetail in _interviewdetailList where interviewdetail.Candidateid == candidateId select interviewdetail).ToList();
+                if (candidateInterInterviewdetailList!=null && candidateInterInterviewdetailList.Count>0)
+                {
+                    foreach (var item in candidateInterInterviewdetailList)
+                    {
+                        string _interviewername = "";
+                        _interviewername = (from interviewer in _interviewerdetailsList where interviewer.Intervievwerid == item.Intervievwerid select (interviewer.Firstname + interviewer.Lastname)).FirstOrDefault();
+                        item.Interviewername = _interviewername==null?string.Empty: _interviewername;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                candidateInterInterviewdetailList= null;
+            }
+            return candidateInterInterviewdetailList;
+        }
         //end
     }
 }
