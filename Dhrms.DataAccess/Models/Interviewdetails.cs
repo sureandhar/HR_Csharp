@@ -13,6 +13,7 @@ namespace Dhrms.DataAccess.Models
         public string Scheduledtime { get; set; }
         public string Attended { get; set; }
         public string Interviewerfeedback { get; set; }
+        public string Roundname { get; set; }
 
         public virtual Candidatedetails Candidate { get; set; }
         public virtual Interviewerdetails Intervievwer { get; set; }

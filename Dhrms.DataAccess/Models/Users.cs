@@ -10,6 +10,7 @@ namespace Dhrms.DataAccess.Models
             Candidatedetails = new HashSet<Candidatedetails>();
             Hr = new HashSet<Hr>();
             Interviewerdetails = new HashSet<Interviewerdetails>();
+            LoginDetails = new HashSet<LoginDetails>();
         }
 
         public int Userid { get; set; }
@@ -22,5 +23,6 @@ namespace Dhrms.DataAccess.Models
         public virtual ICollection<Candidatedetails> Candidatedetails { get; set; }
         public virtual ICollection<Hr> Hr { get; set; }
         public virtual ICollection<Interviewerdetails> Interviewerdetails { get; set; }
+        public virtual ICollection<LoginDetails> LoginDetails { get; set; }
     }
 }
