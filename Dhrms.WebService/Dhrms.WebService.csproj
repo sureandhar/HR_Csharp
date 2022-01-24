@@ -14,10 +14,18 @@
     <None Remove="Newtonsoft.Json" />
     <None Remove="AutoMapper" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Resources\" />
+    <None Remove="Resources\Files\" />
+    <None Remove="Resources\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Files\" />
+    <Folder Include="Resources\Temp\" />
   </ItemGroup>
 </Project>

@@ -6,16 +6,22 @@ using Npgsql;
 using Microsoft.EntityFrameworkCore;
 using NpgsqlTypes;
 using System.Data;
+using System.Timers;
+using System.IO;
 
 namespace Dhrms.DataAccess
 {
     public class DhrmsRepository
     {
         postgresContext context;
+       
         public DhrmsRepository()
         {
             context = new postgresContext();
+           
         }
+
+       
 
         public List<Hr> GetAllHRDetails()
         {
@@ -31,6 +37,28 @@ namespace Dhrms.DataAccess
             }
 
             return Hrlist;
+        }
+
+        public string GetUsername(string EmailId)
+        {
+            string username = string.Empty;
+            try
+            {
+                List<Candidatedetails> candidateList = context.Candidatedetails.ToList();
+                List<Hr> hrList = context.Hr.ToList();
+                username = (from usr in candidateList where usr.Email == EmailId select (usr.Firstname+usr.Lastname)).FirstOrDefault();
+                if (string.IsNullOrEmpty(username))
+                {
+                    username = (from usr in hrList where usr.Email == EmailId select (usr.Firstname + usr.Lastname)).FirstOrDefault();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                username = string.Empty;
+            }
+            return username;
         }
 
         public string validatelogin(string EmailId, string Password)
