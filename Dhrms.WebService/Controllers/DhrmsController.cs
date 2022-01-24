@@ -406,6 +406,31 @@ namespace Dhrms.WebService.Controllers
             }
             return Json(message);
         }
+        public JsonResult addInterviewFeedback(Interviewdetails interview)
+        {
+            string message = "";
+            try
+            {
+                int status = _repository.addInterviewFeedback(interview);
+                if (status == 0)
+                {
+                    message = "success";
+                }
+                else if (status == 1)
+                {
+                    message = "no candidates to update";
+                }
+                else if (status == -99)
+                {
+                    message = "Failed to update try after sometime";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = "Failed to update try after sometime";
+            }
+            return Json(message);
+        }
 
         //end
     }

@@ -581,6 +581,36 @@ namespace Dhrms.DataAccess
             }
             return candidateInterInterviewdetailList;
         }
+
+        public int addInterviewFeedback(Interviewdetails interview)
+        {
+            int status = 0;
+            Interviewdetails interviewObj = null;
+           
+            try
+            {
+                List<Interviewdetails> _interviewdetailList = context.Interviewdetails.ToList();
+                interviewObj = (from interviewdetail in _interviewdetailList where (interviewdetail.Candidateid == interview.Candidateid && interviewdetail.Intervievwerid == interview.Intervievwerid) select interviewdetail).FirstOrDefault();
+
+                if (interviewObj!=null)
+                {
+                    interviewObj.Status = interview.Status;
+                    interviewObj.Interviewerfeedback = interview.Interviewerfeedback;
+                    interviewObj.Attended = interview.Attended;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                status = -99;
+            }
+            return status;
+        }
+
         //end
     }
 }
