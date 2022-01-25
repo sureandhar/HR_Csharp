@@ -17,7 +17,6 @@ namespace Dhrms.DataAccess.Models
         public string Roundname { get; set; }
         [NotMapped]
         public string Interviewername { get; set; }
-
         public virtual Candidatedetails Candidate { get; set; }
         public virtual Interviewerdetails Intervievwer { get; set; }
     }

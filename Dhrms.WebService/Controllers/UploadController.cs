@@ -84,7 +84,7 @@ namespace Dhrms.WebService.Controllers
                 //string username = _repository.GetUsername(emailID);
                 
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Temp",username);
+                var folderName = Path.Combine("Resources", "Temp",username.Replace(' ','_'));
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 
                 if (file.Length>0)

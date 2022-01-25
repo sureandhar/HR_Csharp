@@ -360,7 +360,9 @@ TestResult.xml
 Version.cs
 Version.h
 Version.cpp
-*/Resources/*
-*/Resources/
-*/Resources/Files
-*/Resources/Temp
+*/Resources/Files/**
+*/Resources/Temp/**
+*/Resources/Files/*.txt
+*/Resources/Temp/*.txt
+
+

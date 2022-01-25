@@ -69,9 +69,10 @@ namespace Dhrms.WebService.Controllers
         [HttpPost]
         public JsonResult AddInterviewer(Interviewerdetails interviewer)
         {
+            int status;
             try
             {
-                int status = _repository.AddInterviewer(interviewer);
+                 status = _repository.AddInterviewer(interviewer);
                 string message = string.Empty;
                 if (status==0)
                 {
@@ -81,10 +82,6 @@ namespace Dhrms.WebService.Controllers
                 {
                     message = "No changes were made Try again after somtime ";
                 }
-                //else if(status==-1)
-                //{
-                //    message = "Invalid Email address ";
-                //}
                 else if(status ==-1)
                 {
                     message = "Entered email already exists";
@@ -97,12 +94,14 @@ namespace Dhrms.WebService.Controllers
                 {
                     message = "Something went wrong Try again after somtime";
                 }
-                return Json(message);
+                //return Json(message);
             }
             catch (Exception ex)
             {
-                return Json("Something went wrong");
+                //return Json("Something went wrong");
+                status = -99;
             }
+            return Json(status);
         }
         [HttpPost]
         public JsonResult AddCandidate(object candidateObj)

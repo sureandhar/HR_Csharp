@@ -15,7 +15,6 @@ namespace Dhrms.DataAccess.Models
         {
         }
 
-        public virtual DbSet<AllocatedUnitdetails> AllocatedUnitdetails { get; set; }
         public virtual DbSet<Appliedjobs> Appliedjobs { get; set; }
         public virtual DbSet<Candidatedetails> Candidatedetails { get; set; }
         public virtual DbSet<Diplomadetails> Diplomadetails { get; set; }
@@ -25,7 +24,6 @@ namespace Dhrms.DataAccess.Models
         public virtual DbSet<Interviewdetails> Interviewdetails { get; set; }
         public virtual DbSet<Interviewerdetails> Interviewerdetails { get; set; }
         public virtual DbSet<Jobs> Jobs { get; set; }
-        public virtual DbSet<LoginDetails> LoginDetails { get; set; }
         public virtual DbSet<Pgdetails> Pgdetails { get; set; }
         public virtual DbSet<Pucdetails> Pucdetails { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
@@ -40,7 +38,7 @@ namespace Dhrms.DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
             }
         }
@@ -48,53 +46,6 @@ namespace Dhrms.DataAccess.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresEnum(null, "gen", new[] { "f", "m", "o" });
-
-            modelBuilder.Entity<AllocatedUnitdetails>(entity =>
-            {
-                entity.HasKey(e => e.UnitId)
-                    .HasName("pk_unit");
-
-                entity.ToTable("allocated_unitdetails");
-
-                entity.Property(e => e.UnitId)
-                    .HasColumnName("unit_id")
-                    .UseIdentityAlwaysColumn();
-
-                entity.Property(e => e.BaseLocation)
-                    .IsRequired()
-                    .HasColumnName("base_location")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Candidateid).HasColumnName("candidateid");
-
-                entity.Property(e => e.Designation)
-                    .IsRequired()
-                    .HasColumnName("designation")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.JoinedOn)
-                    .HasColumnName("joined_on")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.MonthsRemaining)
-                    .HasColumnName("months_remaining")
-                    .HasColumnType("numeric");
-
-                entity.Property(e => e.NoticePeriod)
-                    .HasColumnName("notice_period")
-                    .HasColumnType("numeric");
-
-                entity.Property(e => e.UnitName)
-                    .IsRequired()
-                    .HasColumnName("unit_name")
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.Candidate)
-                    .WithMany(p => p.AllocatedUnitdetails)
-                    .HasForeignKey(d => d.Candidateid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_candidate");
-            });
 
             modelBuilder.Entity<Appliedjobs>(entity =>
             {
@@ -178,6 +129,8 @@ namespace Dhrms.DataAccess.Models
                     .IsRequired()
                     .HasColumnName("permanentaddress")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.Resumea).HasColumnName("resumea");
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
 
@@ -501,38 +454,6 @@ namespace Dhrms.DataAccess.Models
                     .HasForeignKey(d => d.Hrid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("hrid_fk");
-            });
-
-            modelBuilder.Entity<LoginDetails>(entity =>
-            {
-                entity.HasKey(e => e.LoginId)
-                    .HasName("pk_login");
-
-                entity.ToTable("login_details");
-
-                entity.Property(e => e.LoginId)
-                    .HasColumnName("login_id")
-                    .UseIdentityAlwaysColumn();
-
-                entity.Property(e => e.IpAddress)
-                    .IsRequired()
-                    .HasColumnName("ip_address");
-
-                entity.Property(e => e.Location)
-                    .IsRequired()
-                    .HasColumnName("location");
-
-                entity.Property(e => e.LoginTime)
-                    .IsRequired()
-                    .HasColumnName("login_time");
-
-                entity.Property(e => e.Userid).HasColumnName("userid");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.LoginDetails)
-                    .HasForeignKey(d => d.Userid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_user");
             });
 
             modelBuilder.Entity<Pgdetails>(entity =>
