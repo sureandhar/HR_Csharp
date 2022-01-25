@@ -126,8 +126,8 @@ namespace Dhrms.DataAccess
                     }
                     if (item.Interviewdetails.Count > 0)
                     {
-                        Interviewdetails _interview = item.Interviewdetails.First();
-                        item.Status = _interview.Status;
+                        Interviewdetails _interview = item.Interviewdetails.Last();
+"                        item.Status = _interview.Status;
                         item.Scheduleddate = _interview.Scheduleddate.ToString();
                         item.Scheduledtime = _interview.Scheduledtime.ToString();
                     }
@@ -618,7 +618,7 @@ namespace Dhrms.DataAccess
             try
             {
                 List<Interviewdetails> _interviewdetailList = context.Interviewdetails.ToList();
-                interviewObj = (from interviewdetail in _interviewdetailList where (interviewdetail.Candidateid == interview.Candidateid && interviewdetail.Intervievwerid == interview.Intervievwerid) select interviewdetail).FirstOrDefault();
+                interviewObj = (from interviewdetail in _interviewdetailList where (interviewdetail.Candidateid == interview.Candidateid && interviewdetail.Intervievwerid == interview.Intervievwerid && interviewdetail.Interviewid==interview.Interviewid) select interviewdetail).FirstOrDefault();
 
                 if (interviewObj!=null)
                 {
