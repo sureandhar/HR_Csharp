@@ -127,7 +127,7 @@ namespace Dhrms.DataAccess
                     if (item.Interviewdetails.Count > 0)
                     {
                         Interviewdetails _interview = item.Interviewdetails.Last();
-"                        item.Status = _interview.Status;
+                        item.Status = _interview.Status;
                         item.Scheduleddate = _interview.Scheduleddate.ToString();
                         item.Scheduledtime = _interview.Scheduledtime.ToString();
                     }
