@@ -41,7 +41,7 @@ namespace Dhrms.WebService.Controllers
             try
             {
                 hrlist = _repository.GetAllHRDetails();
-                if (hrlist.Count==0)
+                if (hrlist==null || hrlist.Count==0)
                 {
                     return Json("No Records Found");
                 }
@@ -224,7 +224,7 @@ namespace Dhrms.WebService.Controllers
             try
             {
                 CandidateList = _repository.GetAllCandidate();
-                if (CandidateList.Count == 0)
+                if (CandidateList==null || CandidateList.Count == 0)
                 {
                     return Json("No Records Found");
                 }
@@ -249,7 +249,7 @@ namespace Dhrms.WebService.Controllers
             try
             {
                 InterviewerdetailsList = _repository.GetAllInterviewerdetails();
-                if (InterviewerdetailsList.Count == 0)
+                if (InterviewerdetailsList==null || InterviewerdetailsList.Count == 0)
                 {
                     return Json("No Records Found");
                 }
@@ -268,7 +268,7 @@ namespace Dhrms.WebService.Controllers
             try
             {
                 InterviewdetailsList = _repository.getCandidateInterviewdetails(candidateId);
-                if (InterviewdetailsList.Count == 0)
+                if (InterviewdetailsList==null || InterviewdetailsList.Count == 0)
                 {
                     return Json("No Records Found");
                 }
@@ -294,7 +294,7 @@ namespace Dhrms.WebService.Controllers
             try
             {
                 candidateDetailsList = _repository.getScheduledCandidates(id);
-                if (candidateDetailsList!=null && candidateDetailsList.Count == 0)
+                if (candidateDetailsList==null || candidateDetailsList.Count == 0)
                 {
                     return Json("No Records Found");
                 }
