@@ -366,3 +366,4 @@ Version.cpp
 */Resources/Temp/*.txt
 
 
+.DS_Store
