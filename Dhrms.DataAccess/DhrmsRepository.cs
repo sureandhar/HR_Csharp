@@ -35,6 +35,10 @@ namespace Dhrms.DataAccess
             {
                 Hrlist = null;
             }
+            finally
+            {
+                context.Dispose();
+            }
 
             return Hrlist;
         }
@@ -57,6 +61,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 username = string.Empty;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return username;
         }
@@ -96,6 +104,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 return RoleName = "-99";
+            }
+            finally
+            {
+                context.Dispose();
             }
         }
 
@@ -143,6 +155,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 CandidateList = null;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return CandidateList;
         }
@@ -203,6 +219,10 @@ namespace Dhrms.DataAccess
             {
                 CandidateDetail = null;
             }
+            finally
+            {
+                context.Dispose();
+            }
             return CandidateDetail;
         }
 
@@ -242,6 +262,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 status = 1;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return status;
         }
@@ -290,6 +314,10 @@ namespace Dhrms.DataAccess
             {
                 status = 1;
             }
+            finally
+            {
+                context.Dispose();
+            }
             return status;
         }
 
@@ -335,6 +363,10 @@ namespace Dhrms.DataAccess
             {
                 status = -1;
             }
+            finally
+            {
+                context.Dispose();
+            }
             return status;
         }
         public int AddCandidateExperience(Workexperiencedetails experience)
@@ -350,6 +382,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 status = -1;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return status;
         }
@@ -501,6 +537,10 @@ namespace Dhrms.DataAccess
             {
                 status = -1;
             }
+            finally
+            {
+                context.Dispose();
+            }
             return status;
         }
 
@@ -534,6 +574,10 @@ namespace Dhrms.DataAccess
             {
                 status = -1;
             }
+            finally
+            {
+                context.Dispose();
+            }
             return status;
         }
 
@@ -555,6 +599,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 status = -1;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return status;
         }
@@ -579,6 +627,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 candidateList = null;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return candidateList;
         }
@@ -606,6 +658,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 candidateInterInterviewdetailList= null;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return candidateInterInterviewdetailList;
         }
@@ -635,6 +691,10 @@ namespace Dhrms.DataAccess
             catch (Exception ex)
             {
                 status = -99;
+            }
+            finally
+            {
+                context.Dispose();
             }
             return status;
         }
