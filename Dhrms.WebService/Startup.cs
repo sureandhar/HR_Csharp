@@ -102,17 +102,17 @@ namespace Dhrms.WebService
             app.UseAuthentication();
 
             //To serve resourse folder to client accessable
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resourses")
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            //    RequestPath = new PathString("/Resourses")
+            //});
             //To serve resourse folder to client accessable
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources/Files")),
-                RequestPath = new PathString("/Resourses/Files")
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources/Files")),
+            //    RequestPath = new PathString("/Resourses/Files")
+            //});
 
             app.UseRouting();
 

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.810.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dhrms.ConsoleApp", "Dhrms.ConsoleApp\Dhrms.ConsoleApp.csproj", "{1A8BC66B-B726-4E37-BFA5-A12247A63CAF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dhrms.DataAccess", "Dhrms.DataAccess\Dhrms.DataAccess.csproj", "{EAF15DAE-5D81-491D-AC8A-8AFBF052BB90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dhrms.WebService", "Dhrms.WebService\Dhrms.WebService.csproj", "{836840B6-0427-43AC-917B-7EAFF235A8E4}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1A8BC66B-B726-4E37-BFA5-A12247A63CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A8BC66B-B726-4E37-BFA5-A12247A63CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A8BC66B-B726-4E37-BFA5-A12247A63CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A8BC66B-B726-4E37-BFA5-A12247A63CAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAF15DAE-5D81-491D-AC8A-8AFBF052BB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EAF15DAE-5D81-491D-AC8A-8AFBF052BB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAF15DAE-5D81-491D-AC8A-8AFBF052BB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
