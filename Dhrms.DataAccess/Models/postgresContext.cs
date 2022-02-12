@@ -38,14 +38,14 @@ namespace Dhrms.DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //string getEnv = Environment.GetEnvironmentVariable("Prod_hostname");
-                //string getEnv = Environment.GetEnvironmentVariable("Prod_dbname");
-                //string getEnv = Environment.GetEnvironmentVariable("Prod_username");
-                //string getEnv = Environment.GetEnvironmentVariable("Prod_password");
+                string _hostname = Environment.GetEnvironmentVariable("Prod_hostname");
+                string _dbname = Environment.GetEnvironmentVariable("Prod_dbname");
+                string _username = Environment.GetEnvironmentVariable("Prod_username");
+                string _password = Environment.GetEnvironmentVariable("Prod_password");
                 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=1234");
                 //optionsBuilder.UseNpgsql("Host=ec2-34-206-148-196.compute-1.amazonaws.com;Database=d2uq2d12dk7p8l;Username=bkyakgetflgtwq;Password=42d26e1ac67d6a82d8fb24616e5828ff759b759c11631077d96b4e192c2181e9;sslmode=Require;TrustServerCertificate=True");
-                optionsBuilder.UseNpgsql("Host=ec2-34-206-148-196.compute-1.amazonaws.com;Database=d2uq2d12dk7p8l;Username=bkyakgetflgtwq;Password=42d26e1ac67d6a82d8fb24616e5828ff759b759c11631077d96b4e192c2181e9;sslmode=Require;TrustServerCertificate=True");
+                optionsBuilder.UseNpgsql("Host="+_hostname+";Database="+_dbname+";Username="+_username+";Password="+_password+";sslmode=Require;TrustServerCertificate=True");
             }
         }
 
